@@ -52,6 +52,24 @@ resource "aws_subnet" "ALB_VPC_Private_Subnet" {
   }
 }
 
+resource "aws_eip" "ALB_VPC_NAT_EIP" {
+  vpc = true
+
+  tags = {
+    Name = "${var.VPC_Name}-NAT-EIP"
+  }
+}
+
+resource "aws_nat_gateway" "ALB_VPC_NAT_GW" {
+  allocation_id = aws_eip.ALB_VPC_NAT_EIP.id
+  subnet_id = aws_subnet.ALB_VPC_Public_Subnet[0].id
+  depends_on = [aws_internet_gateway.ALB_IGW]
+
+  tags = {
+    Name = "${var.VPC_Name}-NAT-GW"
+  }
+}
+
 resource "aws_route_table" "ALB_VPC_Public_RT" {
   vpc_id = aws_vpc.ALB_VPC.id
   route {
@@ -66,6 +84,10 @@ resource "aws_route_table" "ALB_VPC_Public_RT" {
 
 resource "aws_route_table" "RDS-VPC-Private-RT" {
   vpc_id = aws_vpc.ALB_VPC.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.ALB_VPC_NAT_GW.id
+  }
 
   tags = {
     Name = "${var.VPC_Name}-Private-RT"
@@ -109,14 +131,6 @@ resource "aws_security_group" "ALB_VPC_SG" {
     from_port = 22
     to_port = 22
     cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "Allow MySQL/Aurora from VPC Public Subnets"
-    protocol = "tcp"
-    from_port = 3306
-    to_port = 3306
-    #    cidr_blocks = [aws_instance.RDS-EC2.private_ip]
-    cidr_blocks = ["192.168.1.0/24", "192.168.2.0/24", "192.168.3.0/24"]
   }
 
   egress {
