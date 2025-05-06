@@ -6,6 +6,7 @@ variable "azs" {}
 variable "ALB_VPC_Private_Subnet" {}
 variable "ALB_VPC_SG" {}
 variable "key_name" {}
+variable "EC2-Name" {}
 variable "homepage_user_data" {
   default = <<-EOF
     #!/bin/bash

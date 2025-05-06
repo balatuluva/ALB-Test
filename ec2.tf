@@ -11,6 +11,6 @@ resource "aws_instance" "ALB_EC2" {
   user_data = local.user_data_scripts[count.index]
 
   tags = {
-    Name = "ALB-${count.index+1}"
+    Name = element(var.EC2-Name, count.index)
   }
 }

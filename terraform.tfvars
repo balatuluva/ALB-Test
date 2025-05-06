@@ -6,3 +6,4 @@ azs = ["us-east-1a", "us-east-1b", "us-east-1c"]
 ALB_VPC_Private_Subnet = ["192.168.10.0/24", "192.168.20.0/24", "192.168.30.0/24"]
 ALB_VPC_SG = "ALB-VPC-SG"
 key_name = "DevOps-Key"
+EC2-Name = ["ALB-HomePage", "ALB-Movies", "ALB-Shows"]
