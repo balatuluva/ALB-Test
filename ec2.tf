@@ -14,3 +14,12 @@ resource "aws_instance" "ALB_EC2" {
     Name = "ALB-${count.index+1}"
   }
 }
+
+#locals {
+#  user_data_scripts = [
+#    var.homepage_user_data,
+#    var.movies_user_data,
+#    var.shows_user_data
+#  ]
+#}
+#user_data = local.user_data_scripts[count.index]
