@@ -53,7 +53,7 @@ resource "aws_subnet" "ALB_VPC_Private_Subnet" {
 }
 
 resource "aws_eip" "ALB_VPC_NAT_EIP" {
-  vpc = true
+  domain = "vpc"
 
   tags = {
     Name = "${var.VPC_Name}-NAT-EIP"
