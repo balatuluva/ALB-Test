@@ -46,3 +46,4 @@ variable "shows_user_data" {
     sudo systemctl enable nginx
   EOF
 }
+variable "TGS" {}
