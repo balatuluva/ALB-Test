@@ -10,12 +10,22 @@ resource "aws_lb_target_group" "TGS" {
   }
 }
 
+# resource "aws_lb_target_group_attachment" "TG_Attachments" {
+#   # count = length(var.TGS)
+#   count = length(aws_instance.ALB_EC2.id)
+#   target_group_arn = aws_lb_target_group.TGS[count.index].arn
+#   target_id        = aws_instance.ALB_EC2[count.index].id
+#   port = 80
+# }
+
 resource "aws_lb_target_group_attachment" "TG_Attachments" {
-  # count = length(var.TGS)
-  count = length(aws_instance.ALB_EC2.id)
-  target_group_arn = aws_lb_target_group.TGS[count.index].arn
-  target_id        = aws_instance.ALB_EC2[count.index].id
-  port = 80
+  for_each = {
+    for name, tg in var.TGS : name => tg
+  }
+
+  target_group_arn = aws_lb_target_group.TGS[each.key].arn
+  target_id        = aws_instance.ALB_EC2[each.key].id
+  port             = 80
 }
 
 resource "aws_lb" "ALB_Test" {
