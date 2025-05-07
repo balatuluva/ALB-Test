@@ -30,7 +30,7 @@ resource "aws_lb" "ALB_Test" {
   }
 }
 
-resource "aws_lb_listener" "ALB_Test_Listener" {
+resource "aws_lb_listener" "ALB_Test_Listener_Default" {
   load_balancer_arn = aws_lb.ALB_Test.arn
   port = "80"
   protocol = "HTTP"
@@ -40,35 +40,34 @@ resource "aws_lb_listener" "ALB_Test_Listener" {
     target_group_arn = aws_lb_target_group.TGS[0].arn
   }
 }
+resource "aws_lb_listener_rule" "ALB_Test_Listener_Movies" {
+ listener_arn = aws_lb_listener.ALB_Test_Listener_Default.arn
+ priority     = 60
 
-#resource "aws_lb_listener_rule" "rule_b" {
-#  listener_arn = aws_lb_listener.my_alb_listener.arn
-#  priority     = 60
-#
-#  action {
-#    type             = "forward"
-#    target_group_arn = aws_lb_target_group.my_tg_b.arn
-#  }
-#
-#  condition {
-#    path_pattern {
-#      values = ["/images*"]
-#    }
-#  }
-#}
-#
-#resource "aws_lb_listener_rule" "rule_c" {
-#  listener_arn = aws_lb_listener.my_alb_listener.arn
-#  priority     = 40
-#
-#  action {
-#    type             = "forward"
-#    target_group_arn = aws_lb_target_group.my_tg_c.arn
-#  }
-#
-#  condition {
-#    path_pattern {
-#      values = ["/register*"]
-#    }
-#  }
-#}
+ action {
+   type             = "forward"
+   target_group_arn = aws_lb_target_group.TGS[1].arn
+ }
+
+ condition {
+   path_pattern {
+     values = ["/Movies*"]
+   }
+ }
+}
+
+resource "aws_lb_listener_rule" "ALB_Test_Listener_Shows" {
+ listener_arn = aws_lb_listener.ALB_Test_Listener_Default.arn
+ priority     = 40
+
+ action {
+   type             = "forward"
+   target_group_arn = aws_lb_target_group.TGS[2].arn
+ }
+
+ condition {
+   path_pattern {
+     values = ["/Shows*"]
+   }
+ }
+}
