@@ -18,7 +18,7 @@ resource "aws_lb_target_group_attachment" "TG_Attachments" {
 }
 
 resource "aws_lb" "ALB_Test" {
-  name = "ALB_Test"
+  name = "ALB-Test"
   internal = false
   load_balancer_type = "application"
   security_groups = [aws_security_group.ALB_VPC_SG.id]
