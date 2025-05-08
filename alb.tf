@@ -62,7 +62,7 @@ resource "aws_lb_listener_rule" "ALB_Test_Listener_Movies" {
 
  condition {
    path_pattern {
-     values = ["/Movies*"]
+     values = ["/movies/*"]
    }
  }
 }
@@ -78,7 +78,7 @@ resource "aws_lb_listener_rule" "ALB_Test_Listener_Shows" {
 
  condition {
    path_pattern {
-     values = ["/Shows*"]
+     values = ["/shows/*"]
    }
  }
 }
