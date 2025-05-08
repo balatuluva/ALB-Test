@@ -1,7 +1,6 @@
 # ALB-Test
 Setup sample ALB
 ## Requirements
-
 No requirements.
 
 ## Providers
@@ -11,7 +10,6 @@ No requirements.
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 5.97.0 |
 
 ## Modules
-
 No modules.
 
 ## Resources
