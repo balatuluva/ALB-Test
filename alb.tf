@@ -5,6 +5,16 @@ resource "aws_lb_target_group" "TGS" {
   protocol    = "HTTP"
   vpc_id      = aws_vpc.ALB_VPC.id
 
+  health_check {
+    path = count.index == 0 ? "/" : "/${lower(element(var.TGS, count.index))}/"
+    protocol = "HTTP"
+    matcher  = "200"
+    interval = 30
+    timeout  = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
+
   tags = {
     Name = element(var.TGS, count.index)
   }
